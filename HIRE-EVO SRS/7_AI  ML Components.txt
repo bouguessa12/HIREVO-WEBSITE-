@@ -1,0 +1,191 @@
+AI / ML Components
+
+This section defines how Artificial Intelligence and Machine Learning modules support the system’s main functionality — candidate-job matching, scoring, and report generation. It covers data flow, model architecture, evaluation, and explainability.
+
+7.1 Overview
+
+The AI layer is the core engine of the platform.
+It automates candidate evaluation, ranking, and recommendation through hybrid information retrieval (text-based + semantic).
+
+It consists of five main sub-systems:
+
+Feature Extraction & Normalization
+
+Embedding Generation
+
+Hybrid Retrieval & Ranking Engine
+
+Pass Probability Prediction Model
+
+Explainability & Bias Mitigation Layer
+
+7.2 Feature Extraction & Normalization
+
+Goal: Convert unstructured CVs, GitHub metadata, and job descriptions into structured data.
+
+Input Sources:
+
+CV text (parsed from PDF/DOCX)
+
+GitHub repository metadata (topics, languages, stars, commit frequency)
+
+Job descriptions and skill lists
+
+Processing Steps:
+
+Named-entity recognition (NER) and keyword extraction using models such as spaCy or KeyBERT.
+
+Normalization via a skills ontology (mapping synonyms like “JS”, “JavaScript”, “NodeJS” → “JavaScript”).
+
+Optional weighting by frequency and recency of use.
+
+Conversion to a feature vector for downstream embedding.
+
+Output Example:
+
+{
+  "skills": ["Python", "FastAPI", "Machine Learning"],
+  "experience_years": 4,
+  "projects": ["API service", "ML classifier"],
+  "education": "Bachelor of Computer Science"
+}
+
+7.3 Embedding Generation
+
+Purpose: Represent both candidates and job posts in a shared semantic vector space.
+
+Models:
+
+Text embeddings: E5-large or Instructor-XL.
+
+Dimensionality: 768–1024.
+
+Normalization: L2-normalized vectors for cosine similarity comparison.
+
+Procedure:
+
+Concatenate all textual representations (CV summary + skills + GitHub metadata).
+
+Generate vector using the embedding model.
+
+Store in the Vector DB (Qdrant or pgvector).
+
+Update Frequency:
+
+On new candidate upload or job update.
+
+Periodic re-embedding every 30 days to account for model drift.
+
+7.4 Hybrid Retrieval & Ranking
+
+Rationale:
+Purely keyword-based search (BM25) fails to capture semantic meaning, while embeddings alone may ignore explicit skill mentions.
+Hence, a hybrid retrieval approach is used.
+
+Architecture:
+
+Retrieval Stage:
+
+BM25 retrieves top 200 candidates by text relevance.
+
+Vector search retrieves top 200 by semantic similarity.
+
+Combined pool merged (weighted by 0.6 * BM25 + 0.4 * cosine score).
+
+Re-Ranking Stage:
+
+Top 100 candidates passed through a cross-encoder model (e.g., bge-reranker-base).
+
+Produces final ordered list with human-readable match scores (0–100).
+
+Scoring Components:
+
+Skill alignment (60%)
+
+Experience & seniority match (20%)
+
+Repo activity relevance (10%)
+
+Education and certifications (10%)
+
+Latency Target: ≤ 1.5 s (P95) for 100k candidates per tenant.
+
+7.5 Interview Pass Probability Prediction
+
+Objective: Estimate the likelihood that a candidate passes an initial screening interview.
+
+Model Type:
+
+Initially heuristic → evolves into logistic regression or Gradient Boosted Decision Tree (GBDT) using historical interview outcomes.
+
+Inputs:
+
+Top skill match percentage
+
+Years of experience vs. required
+
+Repo activity recency
+
+Communication score (optional future NLP feature)
+
+Outputs:
+
+Probability between 0.0 and 1.0
+
+Confidence interval
+
+Top contributing factors
+
+Example Output:
+
+"pass_prob": 0.74,
+"top_factors": ["High Python alignment", "Relevant API project", "Good repo activity"]
+
+7.6 Explainability & Transparency
+
+Goal: Make every AI decision auditable and understandable.
+
+Techniques Used:
+
+Feature importance extraction (e.g., SHAP or permutation importance).
+
+Skill-based breakdown: explicit mention of which skills and evidence contributed to the score.
+
+Evidence citations:
+
+CV snippets
+
+GitHub repo metadata
+
+Job requirement sections
+
+Example Explanation:
+
+“Candidate matches 82% of required skills (Python, FastAPI, SQL). Evidence found in CV sections ‘Experience – API Developer’ and GitHub repo ‘fastapi-template’.”
+
+7.7 Bias Mitigation
+
+Guidelines:
+
+Exclude protected attributes (gender, race, age, religion) from all model inputs.
+
+Regular fairness checks using:
+
+Demographic parity ratio (≥ 0.8)
+
+Calibration comparison across groups
+
+Periodic audits and retraining with de-biased sampling when available.
+
+Ethical Disclaimer:
+All AI outputs are advisory; recruiters retain full discretion in decision-making.
+
+7.8 Model Evaluation & Monitoring
+Model	Metric	Target	Update Cycle
+Matching Engine	Precision@5	≥ 0.75	Quarterly
+Re-Ranker	Mean Reciprocal Rank (MRR)	≥ 0.70	Quarterly
+Pass Probability Model	AUC	≥ 0.70	Monthly
+Explainability Coverage	% of matches with valid evidence	≥ 95%	Continuous
+
+Monitoring Tools:
+Prometheus (metrics), Grafana (dashboards), and alerting via email/webhook.

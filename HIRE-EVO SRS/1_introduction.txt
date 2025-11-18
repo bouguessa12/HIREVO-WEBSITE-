@@ -1,0 +1,101 @@
+1. Introduction
+1.1 Purpose
+
+This Software Requirements Specification (SRS) document defines the functional and non-functional requirements for the AI-Driven Hiring Platform, an intelligent recruitment application that leverages machine learning and portfolio analysis to assist both candidates and recruiters in the technical hiring process.
+
+The purpose of this document is to:
+
+Describe all features, behaviors, and constraints of the system in a structured and testable manner.
+
+Serve as a contract between stakeholders, developers, and project owners regarding what will be built.
+
+Provide a blueprint for implementation, testing, and future maintenance of the system.
+
+This SRS will be used by:
+
+Developers and data engineers building backend and AI components.
+
+Frontend engineers implementing the web interface.
+
+QA engineers validating compliance with functional and non-functional requirements.
+
+Product owners, recruiters, and stakeholders reviewing and approving functionality before release.
+
+1.2 Scope
+
+The AI Hiring Platform is a web-based system that automates and enhances technical hiring through explainable AI.
+Its main purpose is to analyze candidate data (CVs, GitHub, LinkedIn) and match candidates to job postings based on verified skills and real evidence.
+
+System Objectives:
+
+Accurate Matching: Rank candidates according to skills, experience, and verified portfolio signals.
+
+Explainability: Provide transparent reasoning for each ranking decision.
+
+Candidate Empowerment: Allow candidates to generate tailored CVs and cover letters optimized for specific roles.
+
+Interview Readiness: Estimate the probability of passing a first interview and identify improvement areas.
+
+Data Privacy: Protect user data through consent-based integrations and metadata-only access to private repositories.
+
+Expected Outcomes:
+
+Reduce recruiter time-to-shortlist by 50%.
+
+Improve match quality with ≥0.75 Precision@5 in pilot tests.
+
+Achieve candidate satisfaction ≥4.3/5 for generated CVs.
+
+System Boundaries:
+
+The system focuses on matching and assessment, not full applicant tracking or live code testing.
+
+Deep code analysis is out of scope unless the user explicitly grants code-read permissions.
+
+1.3 Definitions, Acronyms, and Abbreviations
+Term	Definition
+AI / ML	Artificial Intelligence / Machine Learning algorithms used for ranking and prediction.
+Hybrid Search	Combination of keyword-based (BM25) and vector-based similarity retrieval.
+Re-Ranker	A deep model that refines the order of top-K candidates for improved match quality.
+Explainability	Providing human-readable reasoning behind AI decisions or scores.
+GitHub OAuth	Authorization process allowing safe access to user’s GitHub metadata.
+PII	Personally Identifiable Information such as name, email, or resume content.
+Precision@K	Metric for evaluating ranking quality of top-K retrieved results.
+Candidate	A job seeker using the platform to upload a CV and apply for positions.
+Recruiter / HR	A company user posting job openings and reviewing candidate rankings.
+Admin	Platform operator managing tenants, usage limits, and compliance settings.
+1.4 References
+
+IEEE Std 29148-2018 – Systems and Software Engineering – Life Cycle Processes – Requirements Engineering.
+
+FastAPI Documentation (https://fastapi.tiangolo.com/)
+
+Next.js Documentation (https://nextjs.org/docs)
+
+Qdrant Vector Database Docs (https://qdrant.tech/documentation/)
+
+OAuth 2.0 Specification (RFC 6749)
+
+GitHub REST API v3 Documentation
+
+LinkedIn Developer API Guidelines
+
+OWASP Security Guidelines for Web Applications
+
+1.5 Overview
+
+This document specifies:
+
+Functional requirements of each core feature (job intake, candidate ingestion, matching, CV generation, prediction, etc.).
+
+External interfaces (UI, API, and third-party integrations).
+
+Logical and physical architecture of the system.
+
+Data design, including entity relationships and privacy classifications.
+
+AI/ML components, their evaluation metrics, and fairness safeguards.
+
+Non-functional constraints such as performance, security, and reliability.
+
+Subsequent sections detail how the system behaves, how its data flows, and how it will be tested and maintained.

@@ -1,0 +1,113 @@
+Overall Description
+
+This section provides a broad understanding of the system as a whole, its major components, the different types of users, and the constraints or assumptions that affect its development.
+
+2.1 Product Perspective
+
+The AI Hiring Platform is a standalone web-based SaaS application that integrates with external sources (GitHub, LinkedIn, and CV files) to automate and enhance the recruitment process.
+
+It serves as a middleware layer between applicants and recruiters, gathering publicly available data, analyzing it through AI models, and generating structured evaluation reports. These reports help recruiters rank and compare candidates based on skill relevance, experience, and professional alignment.
+
+The system combines several subsystems:
+
+Data Collection Layer: Scrapes or retrieves data from applicant-provided sources (e.g., GitHub, LinkedIn, CV uploads).
+
+AI Analysis Engine: Processes collected data using NLP, embedding models, and machine learning classifiers to evaluate skill level, experience, and cultural fit.
+
+Ranking & Report Generation Module: Produces a detailed applicant summary and suitability ranking relative to the target job post.
+
+Recruiter Dashboard: A user-friendly web interface for recruiters to review applicants, reports, and insights.
+
+Candidate Portal (optional future module): Allows applicants to track their submission and update their profiles.
+
+2.2 Product Functions
+
+At a high level, the platform performs the following core functions:
+
+Applicant Data Aggregation:
+
+Collects candidate data automatically from GitHub (repositories, commits, projects, language usage) and LinkedIn (experience, education, endorsements).
+
+Allows CV upload in PDF/DOCX format for parsing.
+
+Data Parsing and Profiling:
+
+Extracts key information from CV text and online profiles.
+
+Standardizes candidate data into a unified internal schema.
+
+AI Evaluation and Scoring:
+
+Generates a professional profile embedding using an NLP model.
+
+Compares candidate embeddings to job requirements and computes a suitability score.
+
+Detects missing or mismatched skills to flag potential training gaps.
+
+Ranking and Reporting:
+
+Produces a human-readable report summarizing strengths, weaknesses, and estimated match percentage.
+
+Displays a ranked list of candidates per job posting.
+
+Recruiter Interface:
+
+Enables recruiters to view, filter, and export candidate results.
+
+Provides insights through charts or metrics (e.g., skill distribution, average match score).
+
+2.3 User Classes and Characteristics
+User Type	Description	Access Level	Key Features Used
+Recruiter / HR Admin	The primary user who posts job listings and reviews applicants.	Full access	Dashboard, report viewing, ranking filters, exports.
+Hiring Manager	Reviews shortlisted candidates and makes final hiring decisions.	Read-only for reports	Ranking view, suitability reports.
+Applicant (Optional Future Role)	A job seeker submitting their profile and tracking application.	Limited access	Submission, profile tracking.
+System Administrator	Maintains platform, monitors logs, handles integrations and performance.	Full backend access	Configuration, data management, and debugging.
+2.4 Operating Environment
+
+Frontend: React (Next.js or similar), TypeScript
+
+Backend: Python (FastAPI / Flask) or Node.js
+
+AI Processing: Python ML microservice (scikit-learn, sentence-transformers, or OpenAI embeddings API)
+
+Database: PostgreSQL (for structured data) + Vector DB (Pinecone / FAISS / Qdrant)
+
+Hosting Environment: Cloud-based (AWS / Render / Railway / Azure)
+
+Integration: GitHub API, LinkedIn API, and third-party CV parsers
+
+2.5 Design and Implementation Constraints
+
+Must comply with data privacy regulations (GDPR, especially for handling CVs and LinkedIn data).
+
+The LinkedIn API imposes access and rate limitations — scraping must be carefully controlled or replaced with user-provided tokens.
+
+GitHub API usage is limited by rate quotas; caching may be necessary.
+
+System must support high scalability for parallel applicant analysis.
+
+All AI-driven decisions must remain explainable to recruiters (no black-box scoring without transparency).
+
+2.6 User Documentation
+
+Interactive onboarding for recruiters within the app.
+
+Documentation portal explaining:
+
+How to post jobs and interpret reports.
+
+Data usage and privacy settings.
+
+API usage for enterprise clients.
+
+2.7 Assumptions and Dependencies
+
+Recruiters provide structured job descriptions (skills, experience level, keywords).
+
+Candidates’ GitHub or LinkedIn profiles are publicly accessible or authorized.
+
+Internet connection is required for all functions.
+
+AI models may require fine-tuning as datasets evolve.
+
+External API changes (LinkedIn, GitHub) could affect functionality and must be monitored.

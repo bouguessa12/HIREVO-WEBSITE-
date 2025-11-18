@@ -1,0 +1,140 @@
+Non-Functional Requirements (NFRs)
+
+Non-functional requirements define how the system must perform and behave beyond its features. They ensure scalability, reliability, security, usability, and maintainability, especially as the system grows to serve multiple companies and thousands of applicants.
+
+8.1 Performance Requirements
+Aspect	Requirement	Description
+Response Time	≤ 2 seconds	The system should return search and ranking results within 2 seconds for an average query on datasets ≤ 100,000 candidates.
+Batch Report Generation	≤ 30 seconds	Bulk applicant reports should be generated in under 30 seconds for up to 500 candidates.
+API Latency (P95)	≤ 500 ms	REST and internal APIs should respond within 500 ms at the 95th percentile.
+Concurrent Users	5,000+	The system should handle at least 5,000 simultaneous recruiter sessions without degradation.
+Data Ingestion Throughput	100 CVs/minute	The backend should parse and embed at least 100 new CVs per minute.
+8.2 Scalability
+
+The system must scale horizontally as adoption increases.
+
+Approach:
+
+Use containerization (Docker) and orchestration (Kubernetes) for microservice scaling.
+
+Implement auto-scaling policies based on CPU and memory thresholds.
+
+Employ load balancing for stateless services (API, retrieval engine).
+
+The vector database (Qdrant/pgvector) should be deployed in cluster mode for distributed search.
+
+Asynchronous task queues (Celery + Redis/RabbitMQ) used for heavy jobs (e.g., scraping, embedding generation).
+
+Expected Growth Capacity:
+Up to 10M candidates indexed and searchable across clients.
+
+8.3 Availability & Reliability
+Metric	Target
+System Uptime	99.5% monthly uptime
+Failover Time	≤ 60 seconds
+Recovery Point Objective (RPO)	≤ 15 minutes
+Recovery Time Objective (RTO)	≤ 5 minutes
+
+Implementation Guidelines:
+
+Redundant database replicas (PostgreSQL, Qdrant) with failover nodes.
+
+Daily encrypted backups and weekly verification restores.
+
+Graceful degradation — if the AI model fails, fallback to simpler keyword-based search.
+
+Continuous monitoring via Prometheus + Grafana.
+
+8.4 Security Requirements
+
+The system manages sensitive user data, including personal and professional information. Security is therefore a critical part of the architecture.
+
+Core Security Measures:
+
+Authentication & Authorization
+
+JWT-based authentication for APIs.
+
+Role-based access control (RBAC): Recruiter, Candidate, Admin.
+
+OAuth integration with external services (LinkedIn, GitHub).
+
+Data Encryption
+
+AES-256 encryption for data at rest.
+
+TLS 1.3 for all data in transit.
+
+Input Validation & Sanitization
+
+Strict validation of all file uploads (CVs).
+
+Use of isolated containers to process untrusted documents.
+
+API Security
+
+Rate limiting and throttling (e.g., 100 requests/minute per IP).
+
+API keys for external integration partners.
+
+Audit Logging
+
+Track all data access, edits, and model usage for compliance.
+
+Penetration Testing
+
+Quarterly security audits and vulnerability assessments.
+
+8.5 Privacy & Compliance
+
+Objective: Protect user identity and comply with international data protection standards.
+
+Requirement	Implementation
+Data Minimization	Collect only essential data for evaluation.
+Right to Erasure	Allow candidates to delete profiles permanently.
+Anonymization	Before AI analysis, personal identifiers (names, emails, etc.) are masked.
+GDPR & ISO 27001 Alignment	System designed to meet key compliance requirements (even if hosted outside EU).
+Data Retention	Auto-deletion after 12 months of inactivity.
+8.6 Maintainability & Modularity
+
+Key Design Principles:
+
+Microservice architecture: each service can be updated or replaced independently.
+
+Codebase modularization: shared libraries for logging, validation, and embeddings.
+
+Continuous Integration / Deployment (CI/CD):
+
+GitHub Actions or GitLab CI for automatic builds, tests, and deployment.
+
+Automated Testing:
+
+80%+ unit test coverage target.
+
+Integration and load tests before production rollout.
+
+Versioning:
+
+Semantic versioning (v1.2.3 format).
+
+Database migrations handled via Alembic/Flyway.
+
+8.7 Usability
+
+Goal: Ensure recruiters and applicants interact intuitively with minimal friction.
+
+Aspect	Requirement
+Interface Clarity	Clean, responsive dashboard with no more than 3 levels of navigation.
+Accessibility	WCAG 2.1 compliant (contrast, keyboard navigation).
+Language Support	English initially, extensible to French and Arabic.
+Device Support	Mobile-first responsive design using Tailwind + React.
+User Feedback Loop	Real-time feedback on upload, search, and ranking actions.
+8.8 Observability
+
+Monitoring: Prometheus for metrics, Grafana for dashboards.
+
+Logging: Structured JSON logs with ELK (Elasticsearch, Logstash, Kibana) stack.
+
+Tracing: OpenTelemetry integrated into all API endpoints.
+
+Alerts: Triggered for CPU > 80%, API latency > 1s, or failed background tasks

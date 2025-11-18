@@ -1,0 +1,146 @@
+Data Design
+
+This section defines how data is stored, organized, and related across the system.
+It describes the database schema, entities, and relationships used to support the platform’s operations, from candidate data collection to ranking and report generation.
+
+6.1 Data Model Overview
+
+The platform uses a hybrid data architecture:
+
+Relational Database (PostgreSQL): stores structured entities (users, jobs, candidates, reports).
+
+Vector Database (Pinecone / FAISS / Qdrant): stores high-dimensional embeddings for AI similarity search.
+
+Object Storage (S3-compatible): stores uploaded CV files and exported reports.
+
+Together, they form a cohesive system allowing structured queries, semantic search, and efficient AI retrieval.
+
+6.2 Entity–Relationship Description
+
+Below is a simplified ERD in text form:
+
+[User]
+ ├── user_id (PK)
+ ├── name
+ ├── email
+ ├── password_hash
+ ├── role (admin/recruiter)
+ ├── created_at
+
+[Job]
+ ├── job_id (PK)
+ ├── user_id (FK → User)
+ ├── title
+ ├── description
+ ├── required_skills (JSON)
+ ├── experience_level
+ ├── created_at
+
+[Candidate]
+ ├── candidate_id (PK)
+ ├── full_name
+ ├── email
+ ├── github_url
+ ├── linkedin_url
+ ├── cv_file_url
+ ├── normalized_data (JSON)
+ ├── created_at
+
+[Evaluation]
+ ├── eval_id (PK)
+ ├── candidate_id (FK → Candidate)
+ ├── job_id (FK → Job)
+ ├── suitability_score (0–100)
+ ├── top_skills (JSON)
+ ├── missing_skills (JSON)
+ ├── ai_explanation (TEXT)
+ ├── embedding_id (FK → VectorDB)
+ ├── created_at
+
+[Report]
+ ├── report_id (PK)
+ ├── eval_id (FK → Evaluation)
+ ├── report_file_url
+ ├── format (PDF/HTML)
+ ├── generated_at
+
+
+Relationships:
+
+Each User (recruiter) can create many Jobs.
+
+Each Job can have many Candidates evaluated.
+
+Each Candidate may have multiple Evaluations (one per job).
+
+Each Evaluation produces one Report.
+
+6.3 Vector Database Schema
+
+Each vector entry stores an embedding that represents a candidate or job description.
+
+Schema Example:
+
+{
+  "id": "candidate_1234",
+  "embedding": [0.123, -0.055, 0.982, ...],
+  "metadata": {
+    "candidate_id": 1234,
+    "job_id": 12,
+    "skills": ["python", "ml", "api"],
+    "score": 0.85
+  }
+}
+
+
+Use:
+
+Job and candidate embeddings are compared to compute cosine similarity.
+
+Top N candidates are retrieved for ranking.
+
+6.4 Data Flow (Detailed)
+
+Data Input:
+
+Recruiter posts job → stored in Job.
+
+Candidate submits links and CV → stored in Candidate.
+
+Data Enrichment:
+
+Scraping + CV parsing → populates normalized_data.
+
+AI Evaluation:
+
+Embeddings created → stored in Vector DB.
+
+Resulting scores stored in Evaluation.
+
+Report Generation:
+
+Final structured report saved as Report.
+
+CV and report files stored in S3.
+
+6.5 Data Security and Compliance
+
+Encryption: All PII stored encrypted at rest.
+
+Access Control: Candidates’ data accessible only by their associated recruiter.
+
+Retention Policy: Data deleted automatically after 12 months unless extended by user.
+
+Anonymization: When exporting analytics, candidate identifiers are masked.
+
+Backups: Daily PostgreSQL dumps and weekly object storage snapshots.
+
+6.6 Data Integrity Rules
+
+Every Evaluation must reference existing Candidate and Job.
+
+Scores must range strictly between 0 and 100.
+
+Deleting a Job triggers cascading delete for related evaluations and reports.
+
+CV file URLs must point to validated storage paths.

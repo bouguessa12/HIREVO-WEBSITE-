@@ -1,0 +1,146 @@
+External Interface Requirements
+
+This section describes the interfaces between the AI Hiring Platform and external entities such as users, APIs, databases, and hardware systems. It ensures interoperability, usability, and clarity about what data flows in and out of the platform.
+
+4.1 User Interfaces
+
+The user interface (UI) is web-based and designed for simplicity, speed, and clarity. It provides two main environments: the Recruiter Dashboard and the Administrator Console.
+
+4.1.1 Recruiter Dashboard
+
+Purpose: Enables HR users to manage jobs, view applicants, and analyze rankings.
+
+Key Pages:
+
+Login / Registration Page:
+Secure authentication (OAuth, Google/LinkedIn, or email-password).
+
+Dashboard Home:
+Displays recent job posts, number of applicants, average suitability score, and notifications.
+
+Job Management Page:
+
+Add/edit/delete job listings.
+
+Input skills, required experience, and other filters.
+
+Candidate Review Page:
+
+View ranked candidates.
+
+Inspect detailed AI-generated reports.
+
+Filter/sort by skills, score, or experience.
+
+Reports & Exports Page:
+
+Export rankings and insights in PDF or CSV.
+
+UI Style Requirements:
+
+Minimalist layout with clear hierarchy of information.
+
+Consistent use of company branding (logo, color palette).
+
+Responsive design (desktop and tablet support).
+
+Accessible design following WCAG 2.1 AA standards.
+
+4.1.2 Administrator Console
+
+Purpose: Provides system-level control, analytics, and monitoring.
+
+Key Pages:
+
+System Overview: Status of all services, API connections, and usage statistics.
+
+Logs and Alerts: List of recent errors, warnings, and retries.
+
+User Management: Add, remove, or edit recruiter accounts.
+
+Integration Settings: Manage API keys for GitHub, LinkedIn, and storage providers.
+
+UI Style Requirements:
+
+Emphasis on clarity, tables, and data visualization.
+
+Limited to authorized admin users only.
+
+4.2 API Interfaces
+
+The platform uses RESTful APIs to manage communication between the frontend, backend, and third-party integrations.
+
+4.2.1 Internal API (Platform API)
+
+All internal communication between frontend and backend occurs via the following endpoints (example schema):
+
+Endpoint	Method	Purpose
+/auth/login	POST	Authenticates a user.
+/jobs	GET / POST / PUT / DELETE	Manage job postings.
+/candidates	GET	Fetch all candidates linked to a job.
+/upload/cv	POST	Upload and parse a candidate CV.
+/analyze	POST	Trigger AI analysis on candidate data.
+/rankings	GET	Retrieve ranked candidates per job.
+/report/{id}	GET	Retrieve detailed AI-generated report.
+/admin/status	GET	Check backend health and integrations.
+
+Format:
+
+All data exchanged as JSON.
+
+Authentication via JWT or OAuth tokens.
+
+Standard response structure:
+
+{
+  "status": "success",
+  "data": {...},
+  "error": null
+}
+
+4.2.2 External APIs (Integrations)
+Integration	Purpose	Data Retrieved	Authentication
+GitHub API	Collects project and activity data from candidate’s account.	Repositories, commits, languages, stars.	Public or OAuth Token.
+LinkedIn API	Retrieves candidate’s professional background.	Education, experience, endorsements.	OAuth Token (user-provided).
+CV Parser (e.g., OpenAI / custom model)	Extracts structured data from PDF/DOCX files.	Skills, work history, education.	Internal service key.
+Vector Database (FAISS / Pinecone / Qdrant)	Stores embeddings for AI similarity search.	Candidate vectors, job vectors.	Internal access key.
+4.3 Software Interfaces
+
+Frontend–Backend Communication:
+HTTPS over REST API (JSON format).
+
+Backend–Database Communication:
+PostgreSQL via SQLAlchemy or Prisma ORM.
+
+Backend–AI Engine Communication:
+Microservice communication via gRPC or REST (internal).
+
+Storage:
+Object storage for uploaded CVs (AWS S3 / DigitalOcean Spaces).
+
+4.4 Hardware Interfaces
+
+Since this is a cloud-based SaaS system, no direct hardware interfaces exist on the client side beyond standard user devices (PCs, laptops, tablets).
+Server-side requirements depend on deployment choice:
+
+Minimum server specs for pilot deployment:
+
+4 vCPUs
+
+8 GB RAM
+
+40 GB SSD storage
+
+Optional GPU support (for faster embedding or inference):
+
+NVIDIA T4 / A10G recommended
+
+4.5 Communication Interfaces
+
+Protocol: HTTPS for all external traffic, HTTP (localhost) for internal dev.
+
+Authentication: OAuth2 for recruiters, service tokens for internal APIs.
+
+Notifications: Email alerts via SendGrid or AWS SES (for recruiter updates).
+
+WebSockets: Optional, for real-time ranking updates or analysis progress.

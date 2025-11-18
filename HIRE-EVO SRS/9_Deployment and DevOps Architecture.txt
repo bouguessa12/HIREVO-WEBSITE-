@@ -1,0 +1,208 @@
+Deployment and DevOps Architecture
+
+This section defines how the system is packaged, deployed, monitored, and maintained across environments. It ensures that development, testing, and production workflows are consistent, reproducible, and secure. The architecture is designed with automation, scalability, and fault-tolerance in mind.
+
+9.1 Environment Overview
+
+The system is divided into three major environments:
+
+Environment	Purpose	Hosting
+Development (DEV)	Internal development and feature testing	Local Docker + optional cloud sandbox
+Staging (STG)	Pre-production testing and model validation	Cloud (isolated namespace)
+Production (PRD)	Live environment for clients and users	Cloud with high availability
+
+All environments share the same base Docker images and infrastructure-as-code templates (IaC), ensuring parity between stages.
+
+9.2 Infrastructure Overview
+
+Hosting Options:
+
+Primary: AWS / Azure / Google Cloud
+
+Alternative: Self-hosted Kubernetes cluster (for cost efficiency)
+
+Core Components:
+
+Frontend: React + Next.js (served via Nginx)
+
+Backend APIs: FastAPI (Python)
+
+Database: PostgreSQL (RDS or Cloud SQL)
+
+Vector Database: Qdrant / pgvector
+
+Queue System: Redis or RabbitMQ (for async jobs)
+
+Object Storage: AWS S3 / MinIO (for CVs and reports)
+
+ML Services: Separate containerized microservices for embedding, ranking, and scoring models
+
+9.3 Containerization & Orchestration
+
+Containerization:
+
+Each service runs as a Docker container.
+
+Images built using a lightweight base (e.g., python:3.11-slim, node:20-alpine).
+
+Versioned via Git commits and stored in a private container registry (e.g., GitHub Packages or DockerHub Private).
+
+Orchestration:
+
+Kubernetes (K8s) manages deployment, scaling, and self-healing.
+
+Helm charts define each service’s configuration.
+
+Ingress controller (NGINX) routes HTTP traffic to appropriate services.
+
+Horizontal Pod Autoscaler (HPA) adjusts replicas dynamically based on CPU/memory usage.
+
+9.4 Deployment Pipeline (CI/CD)
+
+Toolchain: GitHub Actions / GitLab CI
+
+Pipeline Stages:
+
+Build
+
+Code linting and style checks (flake8, eslint)
+
+Unit tests execution (pytest, Jest)
+
+Docker image build & tag
+
+Test
+
+Integration tests on staging DB
+
+Load testing (Locust) for performance validation
+
+Deploy
+
+Automatic deployment to staging after successful tests
+
+Manual approval for production promotion
+
+Kubernetes rolling updates (zero downtime)
+
+Monitor
+
+Post-deployment health checks
+
+Alerting for failed pods, latency, or resource overuse
+
+Version Control Strategy:
+
+Branching model: main (production), dev (staging), and feature branches (feat/*, fix/*)
+
+Semantic version tagging: vX.Y.Z
+
+9.5 Networking & Access
+
+Architecture Type:
+Microservice mesh with secure inter-service communication.
+
+Components:
+
+API Gateway: Handles routing, rate-limiting, and authentication (e.g., Kong, Traefik).
+
+Internal Network: All backend and ML pods communicate over a private virtual network.
+
+Ingress & Egress Control: Only whitelisted outbound connections allowed (e.g., LinkedIn, GitHub APIs).
+
+CDN: Used to serve static assets (frontend build, logos, JS bundles) with caching.
+
+9.6 Data Management & Storage
+Data Type	Storage Solution	Backup Frequency	Notes
+Candidate CVs	Object Storage (S3/MinIO)	Daily	Encrypted (AES-256)
+Parsed Metadata	PostgreSQL	Hourly incremental	Main relational store
+Embeddings	Qdrant / pgvector	Weekly	Backed up to secondary node
+Logs & Metrics	ELK Stack / Prometheus	Continuous	Retained 30 days
+Model Files	ML Registry (S3 / DVC / Weights & Biases)	On update	Versioned by hash
+9.7 Observability & Monitoring
+
+A key DevOps requirement is maintaining visibility across the entire stack.
+
+Monitoring Stack:
+
+Prometheus – Collects metrics from all services.
+
+Grafana – Visual dashboards for CPU, memory, request latency, and model health.
+
+Loki – Centralized log storage with search.
+
+Alertmanager – Sends email or Slack alerts for anomalies.
+
+UptimeRobot / AWS CloudWatch – External uptime verification.
+
+Key Monitored Metrics:
+
+API response latency
+
+Failed API requests
+
+Queue backlog length
+
+Database query time
+
+Embedding service throughput
+
+9.8 Backup and Disaster Recovery
+
+Objectives:
+
+RPO (Recovery Point Objective): ≤ 15 minutes
+
+RTO (Recovery Time Objective): ≤ 5 minutes
+
+Process:
+
+Daily encrypted backups (DB, vector store, and object storage).
+
+Stored redundantly across at least two availability zones.
+
+Automated recovery scripts tested monthly.
+
+Immutable backups for 30 days (prevent deletion by attackers).
+
+9.9 Infrastructure as Code (IaC)
+
+All infrastructure components are managed through code for repeatability and transparency.
+
+Tools:
+
+Terraform: For provisioning cloud resources (DB, storage, networking).
+
+Helm: For Kubernetes deployments and configurations.
+
+Ansible (optional): For server configuration management.
+
+Benefits:
+
+Full reproducibility of environments.
+
+Simplified rollback and scaling.
+
+Version-controlled infrastructure history.
+
+9.10 Deployment Topology Diagram (Text Description)
+                        +-------------------------+
+                        |       Frontend (React)  |
+                        |  -> served via NGINX    |
+                        +-----------+-------------+
+                                    |
+                             [API Gateway / Load Balancer]
+                                    |
+        ----------------------------------------------------------
+        |                    |                    |              |
++-------+------+    +---------+--------+   +-------+-------+  +---+---+
+| FastAPI Auth |    |  Matching Engine |   |  Report Service |  | ML API|
+|  Service     |    |  (Search + Rank) |   | (PDF/Docs Gen)  |  | Models|
++-------+------+    +---------+--------+   +-------+-------+  +---+---+
+        |                    |                    |              |
+        ----------------------------------------------------------
+                             |        |       |         |
+                        +----+--+  +--+----+  +--+---+  +---+---+
+                        |Postgres|  |Qdrant|  |Redis|  | MinIO  |
+                        +--------+  +-------+  +------+  +-------+
+                                (Data, Embeddings, Cache, Files)

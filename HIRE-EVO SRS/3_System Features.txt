@@ -1,0 +1,207 @@
+System Features
+
+This section defines each major functional component of the platform in detail — including its purpose, user stories, functional requirements, and acceptance criteria.
+
+The goal is to clearly describe what the system must do, so that design, implementation, and testing can be directly derived from these requirements.
+
+3.1 Feature 1: Applicant Data Aggregation
+
+Description:
+This module gathers applicant data from multiple external sources (GitHub, LinkedIn, CV uploads) to create a unified profile for AI evaluation.
+
+Rationale:
+Automates data collection to reduce recruiter effort and ensure consistency between candidate information sources.
+
+User Stories:
+
+As a recruiter, I want the system to automatically gather information from GitHub and LinkedIn so I can view a complete candidate profile in one place.
+
+As an applicant, I want to upload my CV and provide links to my profiles, so the system can evaluate me accurately.
+
+Functional Requirements:
+
+System must accept candidate links for GitHub and LinkedIn.
+
+System must authenticate or scrape data within API limits.
+
+System must allow CV uploads in PDF or DOCX format.
+
+Extracted data (skills, projects, education, work history) must be stored in structured form.
+
+Duplicate or missing data must be detected and resolved.
+
+Acceptance Criteria:
+
+ CV successfully parsed and stored.
+
+ GitHub and LinkedIn data fetched within 5 seconds average response time.
+
+ Combined profile created without conflicting or missing fields.
+
+3.2 Feature 2: Data Parsing and Normalization
+
+Description:
+Processes the collected data into a standardized internal structure for downstream AI evaluation.
+
+Rationale:
+Ensures uniform representation of skills, experiences, and other attributes regardless of data source.
+
+User Stories:
+
+As a developer, I want consistent candidate data formats so my AI models can process them efficiently.
+
+As a recruiter, I want structured data fields like “Skills,” “Experience,” and “Projects” for easier report reading.
+
+Functional Requirements:
+
+Normalize job titles, dates, and skill names into predefined categories.
+
+Convert free-text CV content into structured fields via NLP parsing.
+
+Deduplicate overlapping information (e.g., same company from multiple sources).
+
+Store normalized profiles in PostgreSQL.
+
+Acceptance Criteria:
+
+ All candidate profiles stored under a consistent schema.
+
+ Parsing accuracy ≥ 90% for known skill/entity detection.
+
+ No duplicate or inconsistent entries after processing.
+
+3.3 Feature 3: AI Evaluation and Suitability Scoring
+
+Description:
+Evaluates each applicant’s relevance to a job posting using AI and NLP-based similarity analysis.
+
+Rationale:
+Provides recruiters with an automated, data-driven assessment of candidate suitability.
+
+User Stories:
+
+As a recruiter, I want a suitability score for each candidate so I can quickly identify top matches.
+
+As a hiring manager, I want the AI’s decision-making to be transparent and justifiable.
+
+Functional Requirements:
+
+Represent job descriptions and candidate profiles as embeddings.
+
+Calculate similarity using cosine or semantic distance.
+
+Generate a suitability score (0–100).
+
+Identify and list top matching skills and missing skills.
+
+Provide a brief natural-language explanation of the score.
+
+Acceptance Criteria:
+
+ Score generated for each candidate within 10 seconds.
+
+ Top 3 matching and missing skills correctly identified.
+
+ Report includes an explanation of the ranking.
+
+3.4 Feature 4: Report Generation and Ranking
+
+Description:
+Creates comprehensive candidate reports and ranked lists based on AI evaluation results.
+
+Rationale:
+Simplifies decision-making and provides visual clarity for HR teams.
+
+User Stories:
+
+As a recruiter, I want to see an ordered list of candidates with summarized profiles.
+
+As a hiring manager, I want exportable reports I can share internally.
+
+Functional Requirements:
+
+Generate individual candidate reports (PDF/HTML).
+
+Display ranked lists of candidates for each job posting.
+
+Include filters for skill sets, education, experience, and location.
+
+Allow exporting ranked results (CSV, PDF).
+
+Highlight “best-fit” candidates visually.
+
+Acceptance Criteria:
+
+ Recruiter dashboard shows correct rankings per job.
+
+ Reports generated within 5 seconds per candidate.
+
+ Export function produces valid file formats.
+
+3.5 Feature 5: Recruiter Dashboard
+
+Description:
+A web-based interface where recruiters can manage job postings, review candidate reports, and adjust ranking filters.
+
+Rationale:
+Centralizes all hiring activities within a single visual environment.
+
+User Stories:
+
+As a recruiter, I want a dashboard to post jobs, review applicants, and adjust evaluation criteria.
+
+As an HR admin, I want analytics showing how many applicants were processed and shortlisted.
+
+Functional Requirements:
+
+Provide dashboard access via secure login (OAuth or email/password).
+
+Display jobs, candidates, and rankings.
+
+Allow job posting with skill/experience parameters.
+
+Enable filtering and sorting of candidates.
+
+Provide basic analytics (average score, candidate source breakdown).
+
+Acceptance Criteria:
+
+ Dashboard accessible only to authenticated users.
+
+ All job postings and reports visible within recruiter’s workspace.
+
+ Filters and analytics respond dynamically without page reload.
+
+3.6 Feature 6: System Administration and Monitoring
+
+Description:
+Provides backend management tools for developers or admins to monitor system performance, integrations, and logs.
+
+Rationale:
+Ensures reliability, stability, and compliance of the system during operation.
+
+User Stories:
+
+As a system admin, I want to monitor API usage and performance to maintain uptime.
+
+As a developer, I want access to logs and alerts for debugging issues.
+
+Functional Requirements:
+
+Track API request volume and latency.
+
+Store logs of data collection and AI evaluations.
+
+Monitor health of integration services (GitHub, LinkedIn, vector DB).
+
+Display admin metrics in a protected console.
+
+Support manual reprocessing of failed candidate analyses.
+
+Acceptance Criteria:
+
+ Admin dashboard displays system status in real time.
+
+ Logging system records all major actions.
+
+ Failed data fetches are automatically retried or logged for review.
