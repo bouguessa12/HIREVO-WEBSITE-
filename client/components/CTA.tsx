@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function CTA() {
   return (
     <section className="relative py-24 lg:py-32 bg-navy">
@@ -5,18 +7,21 @@ export default function CTA() {
         <div className="relative rounded-3xl bg-purple-dark p-12 lg:p-16 overflow-hidden shadow-2xl">
           <div className="relative z-10 max-w-2xl">
             <h2 className="text-white font-clash font-semibold text-4xl lg:text-5xl mb-6">
-              Explore Free Version now!
+              Be part of the next evolution of hiring.
             </h2>
             <p className="text-white/75 font-redhat text-lg leading-relaxed mb-8">
-              Search all the open positions on the web. Get your own personalized dashboard for lifetime
+              HireEvo AI combines semantic understanding, fast retrieval, and fair matching so startups and candidates meet faster,
+              without wasting weeks on manual search.
             </p>
             <div className="flex flex-wrap gap-4">
               <button className="px-8 py-4 bg-white text-[#313131] font-redhat font-medium text-lg rounded-md hover:bg-gray-100 transition-colors">
-                Join Waitlist
+                Join HireEvo waitlist
               </button>
-              <button className="px-8 py-4 border border-white text-white font-redhat font-medium text-lg rounded-md hover:bg-white/10 transition-colors">
-                Contact
-              </button>
+              <Link to="/contact" className="inline-flex">
+                <button className="px-8 py-4 border border-white text-white font-redhat font-medium text-lg rounded-md hover:bg-white/10 transition-colors">
+                  Talk to us
+                </button>
+              </Link>
             </div>
           </div>
 

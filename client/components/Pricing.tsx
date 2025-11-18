@@ -1,52 +1,42 @@
 export default function Pricing() {
   const plans = [
     {
-      name: "SILVER",
-      price: "$50",
+      name: "STARTUP",
+      price: "$0",
       features: [
-        "No Discount",
-        "Basic Support",
-        "Ads Banner Free",
-        "Design Style",
-        "Component Library",
-        "All limited links",
-        "Own analytics platform",
-        "Chat support",
-        "Optimize hashtags",
-        "Unlimited users"
+        "Early access for small teams",
+        "Up to 5 active roles",
+        "Up to 5,000 candidates indexed",
+        "Core semantic matching engine",
+        "Basic reporting dashboard",
+        "Email support"
       ]
     },
     {
-      name: "GOLD",
-      price: "$100",
+      name: "GROWTH",
+      price: "$99",
       popular: true,
       features: [
-        "No Discount",
-        "Basic Support",
-        "Ads Banner Free",
-        "Design Style",
-        "Component Library",
-        "All limited links",
-        "Own analytics platform",
-        "Chat support",
-        "Optimize hashtags",
-        "Unlimited users"
+        "For scaling startups and agencies",
+        "Unlimited active roles",
+        "Up to 100,000 candidates indexed",
+        "Two‑stage retrieval + ranking pipeline",
+        "AI Web Scanner for public profiles",
+        "Auto‑CV generation from LinkedIn/GitHub",
+        "Fair‑Match Engine configuration",
+        "Priority support"
       ]
     },
     {
-      name: "PREMIUM",
-      price: "$150",
+      name: "ENTERPRISE",
+      price: "Custom",
       features: [
-        "No Discount",
-        "Basic Support",
-        "Ads Banner Free",
-        "Design Style",
-        "Component Library",
-        "All limited links",
-        "Own analytics platform",
-        "Chat support",
-        "Optimize hashtags",
-        "Unlimited users"
+        "On‑prem or VPC deployment",
+        "Custom data connectors and ATS integration",
+        "Dedicated models for your hiring domain",
+        "Advanced analytics & salary insights",
+        "SLA-backed support & onboarding",
+        "Security and compliance reviews"
       ]
     }
   ];
@@ -59,7 +49,7 @@ export default function Pricing() {
             Pricing Plans
           </h2>
           <p className="text-white/75 font-dm text-base max-w-lg mx-auto mb-8">
-            Coca landing page UI Kit no credit card required. All plans come with a free, 14 day trial of our Premium features.
+            HireEvo AI is designed to be cost‑effective: near‑zero cost per search with custom models trained for software and IT hiring.
           </p>
           
           <div className="inline-flex rounded-lg border border-silver bg-white p-1">

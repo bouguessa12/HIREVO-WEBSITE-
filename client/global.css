@@ -147,4 +147,45 @@
   .animate-scroll {
     animation: scroll 20s linear infinite;
   }
+
+  @keyframes blob-float-1 {
+    0% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    33% {
+      transform: translate3d(40px, -30px, 0) scale(1.05);
+    }
+    66% {
+      transform: translate3d(-30px, 20px, 0) scale(0.97);
+    }
+    100% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+  }
+
+  @keyframes blob-float-2 {
+    0% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    25% {
+      transform: translate3d(-30px, 25px, 0) scale(1.04);
+    }
+    50% {
+      transform: translate3d(30px, 10px, 0) scale(0.96);
+    }
+    75% {
+      transform: translate3d(-20px, -25px, 0) scale(1.02);
+    }
+    100% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+  }
+
+  .animate-blob-1 {
+    animation: blob-float-1 4s ease-in-out infinite;
+  }
+
+  .animate-blob-2 {
+    animation: blob-float-2 4s ease-in-out infinite;
+  }
 }

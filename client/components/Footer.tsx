@@ -95,8 +95,8 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="#" className="text-white/75 font-sans text-sm hover:text-white">
-                  Careers
+                <a href="/contact" className="text-white/75 font-sans text-sm hover:text-white">
+                  Contact
                 </a>
               </li>
             </ul>
@@ -136,7 +136,7 @@ export default function Footer() {
                 className="h-14 w-14"
               />
               <span className="text-white font-inter font-extrabold text-3xl tracking-tight">
-                HIREVO
+                HireEvo AI
               </span>
             </div>
 
@@ -164,7 +164,7 @@ export default function Footer() {
             </div>
 
             <p className="text-white/75 font-sans text-xs">
-              © 2025 Hirevo Reserved
+              © 2025 HireEvo AI. All rights reserved.
             </p>
           </div>
         </div>

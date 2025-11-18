@@ -3,7 +3,7 @@ export default function VideoSection() {
     <section className="relative bg-navy/50 py-24 lg:py-32">
       <div className="max-w-7xl mx-auto px-6 lg:px-12 text-center">
         <h2 className="text-white font-clash font-semibold text-5xl lg:text-6xl leading-tight mb-6">
-          Why Orinix would be your best fit?
+          Why HIREVO would be your best fit?
         </h2>
         
         <p className="text-white/75 font-poppins text-xl mb-12 max-w-3xl mx-auto">

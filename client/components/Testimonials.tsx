@@ -1,32 +1,36 @@
 export default function Testimonials() {
   const testimonials = [
     {
-      name: "Leslie Alexander",
-      role: "Community",
-      text: "Circle is being used for my project, and the team has been very helpful. thanks, are there any new Tools you've tried this week?",
+      name: "Amine B.",
+      role: "Head of Talent, SaaS Startup",
+      text:
+        "With HireEvo AI, we can shortlist the right software engineers in seconds instead of days. The semantic matching understands our tech stack and seniority levels better than any keyword tool we’ve used.",
       rating: 5,
       highlighted: false
     },
     {
-      name: "Leslie Alexander",
-      role: "Community",
-      text: "Circle is being used for my project, and the team has been very helpful. thanks, are there any new Tools you've tried this week?",
+      name: "Sara L.",
+      role: "Recruiter, Remote-first Company",
+      text:
+        "The two‑stage AI pipeline gives us fast lists of candidates and still feels incredibly accurate. Our time‑to‑screen dropped dramatically once we started using HireEvo for our IT roles.",
       rating: 5,
       highlighted: true,
       avatar: "https://api.builder.io/api/v1/image/assets/TEMP/cc6721e97b8f7abba6d8e598b1486289dfb84e80?width=82"
     },
     {
-      name: "Dianne Russell",
-      role: "Community",
-      text: "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit.",
+      name: "Yacine D.",
+      role: "Full‑Stack Engineer",
+      text:
+        "Instead of sending CVs into a black hole, HireEvo actually understands my experience and suggests roles that make sense. The Auto‑CV feature built a clean profile for me from my GitHub and LinkedIn.",
       rating: 5,
       highlighted: false,
       avatar: "https://api.builder.io/api/v1/image/assets/TEMP/fc195addca532eb31fb5672492d0b451f46cccd1?width=82"
     },
     {
-      name: "Darrell Steward",
-      role: "Community",
-      text: "Making your own mobile app is currently pretty easy for me. Thank you, with the aid of Circle assistive technologies!",
+      name: "Imane K.",
+      role: "People Ops Lead",
+      text:
+        "What I love about HireEvo is the focus on skills and experience instead of bias‑prone signals. It helps us argue for fair, data‑driven decisions when we work with hiring managers.",
       rating: 5,
       highlighted: false,
       avatar: "https://api.builder.io/api/v1/image/assets/TEMP/5eb4efb976a8c89664e3d34698c23b284dbb399a?width=82"
@@ -40,7 +44,7 @@ export default function Testimonials() {
 
       <div className="relative max-w-7xl mx-auto px-6 lg:px-12">
         <h2 className="text-white font-clash font-semibold text-5xl text-center mb-20">
-          What people are saying about Circle
+          What people are saying about HireEvo AI
         </h2>
 
         <div className="flex gap-8 overflow-x-auto pb-8 scrollbar-hide">

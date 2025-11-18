@@ -5,10 +5,12 @@ export default function HeroSection() {
   return (
     <section className="relative min-h-screen bg-navy overflow-hidden pt-20">
       {/* Blur effects */}
-  {/* Decorative blur blobs - hidden on small screens to avoid overflow */}
-  <div className="hidden md:block absolute -left-32 top-44 w-72 h-72 md:w-96 md:h-96 bg-primary-blue rounded-full opacity-50 blur-[120px]" />
-  <div className="hidden lg:block absolute left-52 top-[520px] w-72 h-72 lg:w-[427px] lg:h-[427px] bg-purple-500 rounded-full blur-[120px]" />
-  <div className="hidden xl:block absolute left-[740px] top-[602px] w-80 h-80 xl:w-[534px] xl:h-[534px] bg-primary-blue rounded-full blur-[120px]" />
+      {/* Decorative blur blobs - hidden on small screens to avoid overflow */}
+      <div className="hidden md:block absolute -left-32 top-44 w-72 h-72 md:w-96 md:h-96 bg-primary-blue rounded-full opacity-50 blur-[120px] animate-blob-1" />
+      <div className="hidden lg:block absolute left-52 top-[520px] w-72 h-72 lg:w-[427px] lg:h-[427px] bg-purple-500 rounded-full blur-[120px] opacity-70 animate-blob-2" />
+      <div className="hidden xl:block absolute left-[740px] top-[602px] w-80 h-80 xl:w-[534px] xl:h-[534px] bg-primary-blue rounded-full blur-[120px] opacity-40 animate-blob-1" />
+      <div className="hidden lg:block absolute right-[-120px] top-32 w-[420px] h-[420px] bg-gradient-to-bl from-primary-purple/70 via-primary-blue/40 to-transparent blur-[180px] opacity-70 animate-blob-2 mix-blend-screen" />
+      <div className="hidden xl:block absolute right-[-80px] top-80 w-[320px] h-[320px] bg-gradient-to-bl from-primary-blue/50 via-purple-500/30 to-transparent blur-[160px] opacity-60 animate-blob-1 mix-blend-screen" />
       
       {/* Decorative dots */}
   <div className="hidden lg:block absolute left-20 top-[1602px] w-48 h-48 opacity-60">
@@ -28,36 +30,36 @@ export default function HeroSection() {
         </svg>
       </div>
 
-  <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
         {/* Main content */}
         <div className="text-center pt-16 lg:pt-24">
           <p className="text-[#EBEBEB] font-poppins text-xl mb-12">
-            Next gen evolution of hiring !
+            The custom ML engine for fair, fast software hiring.
           </p>
           
           <h1 className="text-white font-inter font-semibold text-4xl md:text-5xl lg:text-6xl leading-tight max-w-4xl mx-auto mb-12 capitalize">
-            Integrate AI To connects people with companies faster and smarter.
+            HireEvo AI matches jobs and candidates using deep semantic understanding.
           </h1>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-5 mb-16">
             <Link to="/signup" className="inline-flex">
               <button className="inline-flex items-center justify-center h-12 px-10 bg-primary-purple hover:bg-purple-dark text-white font-inter font-extrabold text-lg rounded-lg transition-all duration-200 hover:scale-105">
-                Join Now
+                Join the waitlist
               </button>
             </Link>
             <button className="inline-flex items-center justify-center h-12 px-10 border border-white text-white font-clash font-semibold text-base rounded-lg hover:bg-white/10 transition-all duration-200">
-              Know More
+              See how the AI works
             </button>
           </div>
         </div>
 
         {/* Hero preview image */}
-        <div className="relative mt-8 lg:mt-16 max-w-5xl mx-auto">
-          <div className="relative rounded-[30px] overflow-hidden">
+        <div className="relative mt-8 lg:mt-16 max-w-4xl mx-auto">
+          <div className="relative rounded-[30px] overflow-hidden shadow-[0_0_60px_rgba(88,86,214,0.45)]">
             <img 
               src={HeroImage}
               alt="HIREVO Hero"
-              className="w-full h-auto"
+              className="w-full h-auto scale-[0.94] lg:scale-100"
             />
           </div>
           
@@ -71,24 +73,29 @@ export default function HeroSection() {
               </div>
               <div className="flex-1">
                 <h3 className="font-poppins font-bold text-lg text-[#0A1E40] mb-1">
-                  Hirevo Utilization
+                  HireEvo AI in numbers
                 </h3>
                 <p className="text-sm text-[#0A1E40]/50 font-poppins mb-4">
-                  24 Data available
+                  ~80 ms latency · 78.6% top‑1 accuracy · 100k+ candidates
                 </p>
                 <button className="w-full h-11 bg-[#236BFE] text-white font-poppins font-medium text-sm rounded hover:bg-blue-600 transition-colors">
-                  Analysis Now
+                  Explore matching quality
                 </button>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-          {/* Scrolling banner */}
-        <div className="mt-32 overflow-hidden bg-primary-purple py-6">
+      {/* Scrolling banner - full width */}
+      <div className="mt-32 bg-primary-purple py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 overflow-hidden">
           <div className="flex items-center gap-16 animate-scroll whitespace-nowrap">
             {Array.from({ length: 6 }).map((_, i) => (
-              <span key={i} className="text-white font-clash font-bold text-3xl tracking-wide">
+              <span
+                key={i}
+                className="text-white font-clash font-bold text-3xl tracking-wide"
+              >
                 Join The Waitlist
               </span>
             ))}

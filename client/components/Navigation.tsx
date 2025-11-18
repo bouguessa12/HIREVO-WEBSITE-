@@ -29,9 +29,9 @@ export default function Navigation() {
             <a href="#pricing" className="text-white font-clash text-lg tracking-wide hover:text-primary-purple transition-colors">
               Pricing
             </a>
-            <a href="#blog" className="text-white font-clash text-lg tracking-wide hover:text-primary-purple transition-colors">
-              Blog
-            </a>
+            <Link to="/contact" className="text-white font-clash text-lg tracking-wide hover:text-primary-purple transition-colors">
+              Contact
+            </Link>
           </div>
 
           <Link to="/signup" className="hidden md:inline-flex">

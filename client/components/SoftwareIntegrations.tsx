@@ -2,8 +2,8 @@ export default function SoftwareIntegrations() {
   return (
     <section className="relative py-24 lg:py-32 bg-navy/50 overflow-hidden">
       {/* Blur effects */}
-      <div className="absolute -left-24 top-1/2 w-80 h-80 bg-primary-blue rounded-full blur-[120px] opacity-50" />
-      <div className="absolute right-0 bottom-0 w-[427px] h-[427px] bg-purple-500 rounded-full blur-[120px] opacity-50" />
+      <div className="absolute -left-24 top-1/2 w-80 h-80 bg-primary-blue rounded-full blur-[120px] opacity-50 animate-blob-2" />
+      <div className="absolute right-0 bottom-0 w-[427px] h-[427px] bg-purple-500 rounded-full blur-[120px] opacity-70 animate-blob-1" />
       
       {/* Stars */}
       <div className="absolute left-64 top-44 w-5 h-5">
@@ -21,8 +21,12 @@ export default function SoftwareIntegrations() {
 
       <div className="relative max-w-7xl mx-auto px-6 lg:px-12 text-center">
         <h2 className="text-white font-clash font-semibold text-6xl lg:text-7xl xl:text-8xl leading-tight mb-16">
-          Useful software that We assist.
+          Connects to the platforms where talent actually lives.
         </h2>
+        <p className="text-white/70 font-open text-lg max-w-3xl mx-auto mb-12">
+          HireEvo AI’s Web Scanner can search LinkedIn, Facebook, and public platforms to discover open jobs and available candidates,
+          bringing everything into one place so nobody has to spend hours scrolling feeds.
+        </p>
 
         {/* Logo rows */}
         <div className="space-y-16">
